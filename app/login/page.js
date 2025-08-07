@@ -1,19 +1,22 @@
 'use client';
 
 import { signIn, useSession } from "next-auth/react";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { SubtleSpinner } from "@/components/SubtleSpinner";
 
 export default function LoginPage() {
   const { data: session, status } = useSession()
   const router = useRouter();
+  const pathname = usePathname()
   const [error, setError] = useState("");
+  const [loading, setloading] = useState(false)
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
+    setloading(true)
     const username = e.target.username.value;
     const password = e.target.password.value;
 
@@ -27,8 +30,15 @@ export default function LoginPage() {
       router.push("/");
     } else {
       setError("Invalid username or password");
+      setloading(false)
     }
   };
+
+  useEffect(() => {
+    setloading(false)
+  }, [pathname])
+  
+  if(loading) return <SubtleSpinner />
 
   if (status === "authenticated") {
     return (
@@ -45,6 +55,9 @@ export default function LoginPage() {
       </div>
     );
   }
+
+
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">

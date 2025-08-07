@@ -12,7 +12,6 @@ import { SubtleSpinner } from '@/components/SubtleSpinner';
 export default function SettingsPage() {
     const { data: session, status, update } = useSession();
 
-
     const [profileImage, setprofileImage] = useState('');
     const [editMode, setEditMode] = useState(false);
     const [loading, setLoading] = useState(false)
@@ -106,6 +105,11 @@ const authenticated = status == "authenticated"
 
 
 
+
+    if (status === "loading" || loading) {
+        return <SubtleSpinner />
+    }
+
     if (status === "unauthenticated") {
 
         return (
@@ -121,10 +125,6 @@ const authenticated = status == "authenticated"
                 </Link>
             </div>
         );
-    }
-
-    if (status === "loading") {
-        return <SubtleSpinner />
     }
 
 
@@ -247,7 +247,7 @@ const authenticated = status == "authenticated"
                             </button>
 
                             <button
-                                onClick={() => signOut()}
+                                onClick={() => {setLoading(true); signOut(); setLoading(false)}}
                                 className="bg-red-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition shadow-md"
                             >
                                 Sign Out

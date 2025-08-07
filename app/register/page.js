@@ -1,21 +1,23 @@
 'use client';
 
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import ImageKit from "imagekit-javascript";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { SubtleSpinner } from "@/components/SubtleSpinner";
 
 
 export default function RegisterPage() {
   const { data: session, status } = useSession()
   const router = useRouter();
+  const pathname = usePathname()
   const [error, setError] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [loading, setLoading] = useState(false);
-
+  const [screenLoading, setScreenLoading] = useState(false)
 
   const handleUpload = async (e) => {
     const file = e.target.files[0];
@@ -24,17 +26,14 @@ export default function RegisterPage() {
     try {
       setLoading(true);
 
-      // ✅ Step 1: Get auth signature from your backend
-      const res = await fetch('/api/imagekit-auth'); // This is the bug line you saw
+      const res = await fetch('/api/imagekit-auth');
       const auth = await res.json();
 
-      // ✅ Step 2: Create ImageKit instance
       const imagekit = new ImageKit({
         publicKey: process.env.NEXT_PUBLIC_PUBLIC_KEY,
         urlEndpoint: process.env.NEXT_PUBLIC_URL_ENDPOINT,
       });
 
-      // ✅ Step 3: Upload
       imagekit.upload(
         {
           file,
@@ -60,6 +59,7 @@ export default function RegisterPage() {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    setScreenLoading(true)
     let form = e.target
 
     const formData = new FormData();
@@ -81,8 +81,15 @@ export default function RegisterPage() {
     } else {
       const data = await res.json();
       setError(data.message || "Registration failed");
+      setScreenLoading(false)
+
     }
   };
+
+  useEffect(() => {
+    setScreenLoading(false)
+  }, [pathname])
+  
 
   if (status === "authenticated") {
     return (
@@ -100,6 +107,8 @@ export default function RegisterPage() {
     );
   }
 
+  if (screenLoading) return <SubtleSpinner/>
+
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center px-4 max-md:py-20">
@@ -112,6 +121,7 @@ export default function RegisterPage() {
         <input
           name="name"
           type="text"
+          maxLength={9}
           placeholder="Full Name"
           required
           className="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -119,6 +129,7 @@ export default function RegisterPage() {
 
         <input
           name="username"
+          maxLength={9}
           type="text"
           placeholder="Username"
           required
@@ -136,7 +147,7 @@ export default function RegisterPage() {
         <textarea
           name="bio"
           type="text"
-          placeholder="Bio (optional)"
+          placeholder="Bio"
           required
           className="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
