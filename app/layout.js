@@ -1,5 +1,13 @@
+
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Sessionwraper from "@/components/Sessionwraper";
+import Navbar from "@/components/Navbar";
+import TopBar from "@/components/TopBar";
+import ThemeWrapper from "@/components/ThemeWraper";
+import { Toaster } from "sonner";
+
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,11 +27,44 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
+      <head>
+        <link rel="icon" href="/favicon.png" sizes="any" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link href="https://fonts.googleapis.com/css2?family=Boldonse&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Martel+Sans:wght@200;300;400;600;700;800;900&family=Poetsen+One&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Rubik+Glitch&family=Special+Gothic+Condensed+One&family=Special+Gothic+Expanded+One&family=Winky+Rough:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet"></link>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter&family=Exo+2&family=Comic+Neue&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <Sessionwraper>
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
+          <ThemeWrapper>
+            <TopBar />
+            {children}
+            <Toaster position="top-right"
+              theme="light"
+              toastOptions={{
+                style: {
+                  backgroundColor: '#f3f4ff', // Tailwind bg-green-50
+                  color: '#000000',           // Tailwind text-black
+                },
+                classNames: {
+                  toast: 'rounded-lg shadow-md border border-green-200',
+                  title: 'text-black font-semibold',
+                  description: 'text-black text-sm',
+                  icon: 'text-blue-600', // ✅ green icon
+                  actionButton: 'bg-blue-600 text-white',
+                  cancelButton: 'text-black',
+                },
+                duration: 3000,
+              }} />
+            <Navbar />
+          </ThemeWrapper>
+        </body>
+      </Sessionwraper>
     </html>
   );
 }
