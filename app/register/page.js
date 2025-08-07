@@ -88,7 +88,7 @@ export default function RegisterPage() {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 dark:bg-gray-900 px-4 text-center">
         <h1 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
-          You're already Registered
+          You&lsquo;re already Registered
         </h1>
         <Link href="/">
           <button className="flex items-center gap-2 bg-blue-600 text-white px-5 py-2 rounded-lg shadow-md hover:bg-blue-700 transition">

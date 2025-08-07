@@ -93,7 +93,7 @@ export default async function ProfilePage({ params }) {
       {sessionId && authorId !== sessionId && (<FollowButton targetUserId={user._id.toString()} />)}
       {/* Posts */}
       <div className=" w-full py-1 flex flex-col justify-start">
-        <h1 className="text-2xl font-bold mb-4 flex">{user.name}'s Profile</h1>
+        <h1 className="text-2xl font-bold mb-4 flex">{user.name}&lsquo;s Profile</h1>
         <TabsSection posts={cleanPosts} followers={followers} following={following} />
       </div>
 

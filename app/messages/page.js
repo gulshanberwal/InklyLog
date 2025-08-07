@@ -5,6 +5,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { SubtleSpinner } from "@/components/SubtleSpinner";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import Image from "next/image";
 
 export default function MessagesPage() {
   const { data: session, status } = useSession();
@@ -34,7 +35,7 @@ export default function MessagesPage() {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 dark:bg-gray-900 px-4 text-center">
         <h1 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
-          You're not logged in
+          You&lsquo;re not logged in
         </h1>
         <Link href="/login">
           <button className="flex items-center gap-2 bg-blue-600 text-white px-5 py-2 rounded-lg shadow-md hover:bg-blue-700 transition">
@@ -63,11 +64,19 @@ export default function MessagesPage() {
               className="flex items-center justify-between py-4 px-3 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-150 group"
             >
               <div className="flex items-center gap-4 overflow-hidden">
-                <img
-                  src={msg.profileImage || "/default-avatar.png"}
-                  alt={msg.name}
-                  className="w-10 h-10 rounded-full object-cover"
-                />
+                <div
+                  className="w-11 shrink-0 h-11 rounded-full p-[2px] cursor-pointer bg-gradient-to-tr from-blue-500 via-blue-400 to-blue-900 hover:scale-105 transition"
+                >
+                  <div className="w-full h-full rounded-full overflow-hidden bg-white dark:bg-gray-800">
+                    <Image
+                      src={msg.profileImage}
+                      alt={msg.name}
+                      width={56}
+                      height={56}
+                      className="w-full h-full rounded-full object-cover border border-white dark:border-gray-700"
+                    />
+                  </div>
+                </div>
                 <div className="overflow-hidden">
                   <p className="font-medium text-gray-900 dark:text-white truncate">
                     {msg.name}
