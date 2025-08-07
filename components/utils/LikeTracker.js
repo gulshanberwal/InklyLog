@@ -37,7 +37,6 @@ export default function LikeTracker({ slug, initialLikes }) {
     }
     );
     let a = await res.json()
-    console.log(a)
     // Update localStorage
     let likedPosts = JSON.parse(localStorage.getItem(`likedPosts-${session.user.username}`) || "[]");
     if (newLikedState) {

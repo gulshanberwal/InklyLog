@@ -11,7 +11,7 @@ export default function MessagesPage() {
   const router = useRouter()
   const pathname = usePathname()
   const [messages, setMessages] = useState([]);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
 
 
   useEffect(() => {

@@ -10,16 +10,18 @@ import { FontFamily, TextStyle } from '@tiptap/extension-text-style'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { SubtleSpinner } from '@/components/SubtleSpinner'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import { toast } from 'sonner'
 
 const Tiptap = () => {
   const router = useRouter()
+  const pathname = usePathname()
   const { data: session, status } = useSession()
   const [title, setTitle] = useState('')
   const [subject, setSubject] = useState('')
   const [post, setPost] = useState()
   const [mounted, setMounted] = useState(false)
+  const [disabled, setDisabled] = useState(false)
 
 
 
@@ -65,8 +67,6 @@ const Tiptap = () => {
   })
 
 
-  console.log()
-
 
   const handleSubmit = async () => {
     if (!title || !subject || !post || editor.isEmpty) {
@@ -74,24 +74,29 @@ const Tiptap = () => {
       return
     }
     try {
+      setDisabled(true)
       const data = await fetch(`/api/blogs`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title, subject, post, id: session.user.id }),
       });
       const info = await data.json()
-      console.log(info)
       setTitle("")
       setSubject("")
       editor.commands.clearContent();
       toast.success("Post successfull")
       router.push("/dashboard")
-      
+
     } catch (error) {
       toast.error("Something went wrong!")
     }
 
   }
+
+  useEffect(() => {
+    setDisabled(false)
+  }, [pathname])
+
 
 
   if (!mounted || !editor) return null;
@@ -150,12 +155,18 @@ const Tiptap = () => {
 
         {/* Submit Button */}
         <div className="text-right">
-          <button
-            onClick={handleSubmit}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2  rounded-md transition shadow-md"
-          >
-            Publish Post
-          </button>
+          {!disabled ?
+            <button
+              onClick={handleSubmit}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2  rounded-md transition shadow-md"
+            >
+              Publish Post
+            </button> :
+            <button
+              className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-2  rounded-md transition shadow-md"
+            >
+              Publish Post
+            </button>}
         </div>
       </div>
     </div >

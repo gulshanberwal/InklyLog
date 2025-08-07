@@ -209,7 +209,7 @@ export default function HomePage() {
         </Masonry>
       }
       {hasMore && (
-        <div ref={loaderRef} className="col-span-full flex justify-center py-6 dark:text-white">
+        <div ref={loaderRef} className="col-span-full flex justify-center text-black py-6 dark:text-white">
           Loading...
         </div>
       )}

@@ -8,7 +8,6 @@ export default function ViewTracker({ slug, onBlocked }) {
     const allViewed = Object.keys(sessionStorage).filter((key) =>
       key.startsWith("viewed-")
     );
-    console.log(allViewed)
     // If this post has already been viewed, return early
     const viewedKey = `viewed-${slug}`;
     if (sessionStorage.getItem(viewedKey)) return;

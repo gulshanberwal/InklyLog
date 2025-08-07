@@ -13,7 +13,6 @@ import { SubtleSpinner } from "@/components/SubtleSpinner";
 export default function ConversationPage() {
   const { userId } = useParams();
   const { data: session, status } = useSession();
-  const router = useRouter()
   const [userData, setUserData] = useState({})
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
@@ -27,12 +26,14 @@ export default function ConversationPage() {
   useEffect(() => {
     const fetcher = async () => {
       if (status !== "authenticated") return;
+      setLoading(true)
       const res = await fetch(`/api/register?id=${userId}`)
       const data = await res.json()
       setUserData(data)
+      setLoading(false)
     }
     fetcher()
-  }, [])
+  }, [userId, status])
 
 
 
@@ -128,7 +129,6 @@ export default function ConversationPage() {
     });
 
     const data = await res.json();
-    console.log(data)
     setNewMessage("");
 
     // Emit the message to the socket server

@@ -49,7 +49,6 @@ export default function DashboardPage() {
                 setName(`${res.name}`)
                 setUsername(`${res.username}`)
                 setBio(`${res.bio}`)
-                console.log(res.following)
 
                 // Set followers and following directly from populated data
                 setFollowersState(res.followers);
@@ -112,7 +111,7 @@ export default function DashboardPage() {
                         >
                             <div className="w-full h-full rounded-full overflow-hidden bg-white dark:bg-gray-800">
                                 <Image
-                                    src={profileImage}
+                                    src={profileImage || "default-avatar.png"}
                                     alt="Profile Image"
                                     width={56}
                                     height={56}

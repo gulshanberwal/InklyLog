@@ -49,7 +49,6 @@ export default function RegisterPage() {
             console.error("Upload error:", err); // Even if empty, log it
           } else {
             setImageUrl(result.url); // ✅ Save to stat
-            console.log("Uploaded:", result.url);
           }
         }
       );

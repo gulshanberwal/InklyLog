@@ -23,6 +23,7 @@ const EditPostPage = () => {
   const [postContent, setPostContent] = useState(null);
   const [mounted, setMounted] = useState(false);
   const [loading, setLoading] = useState(false)
+  const [disabled, setDisabled] = useState(false)
   
 
   const editor = useEditor({
@@ -76,6 +77,7 @@ const EditPostPage = () => {
     }
 
     try {
+      setDisabled(true)
       const res = await fetch(`/api/blogs/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
@@ -85,12 +87,15 @@ const EditPostPage = () => {
       if (res.ok) {
         toast.success('Post updated successfully');
         router.push("/dashboard");
+        setDisabled(false)
       } else {
         toast.error("Failed to update post");
+        setDisabled(false)
       }
     } catch (error) {
       console.error(error);
       toast.error("Something went wrong!");
+      setDisabled(false)
     }
   };
 
@@ -144,12 +149,17 @@ const EditPostPage = () => {
         </div>
 
         <div className="text-right">
+          {!disabled ? 
           <button
             onClick={handleSubmit}
             className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md transition shadow-md"
           >
             Update Post
-          </button>
+          </button> : <button
+            className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-2 rounded-md transition shadow-md"
+          >
+            Update Post
+          </button> }
         </div>
       </div>
     </div>

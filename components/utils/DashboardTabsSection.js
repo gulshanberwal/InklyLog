@@ -3,13 +3,14 @@
 import Image from "next/image";
 import { Eye, MessageCircle } from "lucide-react";
 import LikeTracker from "./LikeTracker";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { toast } from "sonner";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function DashboardTabsSection({ posts, followers, following, refreshPosts, setRefreshPosts }) {
     const router = useRouter()
+    const pathname = usePathname()
     const [activeTab, setActiveTab] = useState("posts");
     const [loading, setLoading] = useState(false)
 
@@ -66,10 +67,10 @@ export default function DashboardTabsSection({ posts, followers, following, refr
         );
     };
 
-
-    // const handleDelete = async (postId) => {
-    //     showCustomToast(postId)
-    // };
+    useEffect(() => {
+        setLoading(false)
+    }, [pathname])
+    
 
     const handleNav = (section) => {
         if (activeTab === section) return;
@@ -104,7 +105,7 @@ export default function DashboardTabsSection({ posts, followers, following, refr
                         {posts?.length ? posts.map((post) => (
                             <div
                                 key={post.slug}
-                                onClick={() => router.push(`/post/${post.slug}`)}
+                                onClick={() => { setLoading(true); router.push(`/post/${post.slug}`)}}
                                 className="border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 rounded-xl p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center hover:bg-blue-50 dark:hover:bg-gray-800 hover:shadow-md transition cursor-pointer group"
                             >
                                 <div className="flex-1">
@@ -127,9 +128,8 @@ export default function DashboardTabsSection({ posts, followers, following, refr
                                     <button
                                         onClick={(e) => {
                                             e.stopPropagation();
-                                            setLoading(true)
-                                            router.push(`/dashboard/edit/${post._id}`)
-                                            setLoading(false)
+                                            setLoading(true);
+                                            router.push(`/dashboard/edit/${post._id}`);
                                         }}
                                         className="text-sm px-4 py-1 border border-gray-800 text-white rounded-full bg-black dark:bg-white dark:text-black dark:hover:bg-gray-200 transition hover:scale-105"
                                     >

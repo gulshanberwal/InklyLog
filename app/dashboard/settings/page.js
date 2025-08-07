@@ -41,7 +41,6 @@ const authenticated = status == "authenticated"
             f()
         }
         else {
-            console.log("session not found!")
         }
     }, [authenticated, editMode == false, session])
 
@@ -79,7 +78,6 @@ const authenticated = status == "authenticated"
                     } else {
                         setprofileImage(result.url)
                         setUserData((prev) => ({ ...prev, profileImage: result.url }));
-                        console.log("Uploaded:", result.url);
                     }
                 }
             );
@@ -104,10 +102,8 @@ const authenticated = status == "authenticated"
         let user = a.user
         if (res.ok) setEditMode(false);
         await update({ name: user.name });
-        console.log(user)
     };
 
-    console.log(session)
 
 
     if (status === "unauthenticated") {

@@ -18,7 +18,6 @@ export async function generateMetadata() {
 
 export default async function ProfilePage({ params }) {
   await dbConnect();
-  console.log(params.params)
   const [authorId, sessionId] = params.params || [];
 
   if (!mongoose.Types.ObjectId.isValid(authorId)) return notFound();
@@ -27,7 +26,6 @@ export default async function ProfilePage({ params }) {
   const blogs = await Blogs.find({ authorId: authorId }).sort({ createdAt: -1 });
   const user = await Register.findById(authorId).populate("followers", "username name profileImage").populate("following", "username name profileImage").lean();
 
-  console.log(user)
   if (!blogs || !user) return notFound();
 
 

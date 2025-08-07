@@ -24,7 +24,7 @@ export default function Navbar() {
 
   useEffect(() => {
     if (session) {
-      if (status !== "authenticated") return console.log("you are not logged in")
+      if (status !== "authenticated") return 
       let f = async () => {
         let a = await fetch(`/api/register?username=${session.user.username}`)
         let res = await a.json()
