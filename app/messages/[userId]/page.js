@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, use } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { IoCheckmarkCircleOutline, IoCheckmarkDoneCircle } from "react-icons/io5";
@@ -21,12 +21,12 @@ export default function ConversationPage() {
   const [selectedMessages, setSelectedMessages] = useState(new Set());
   const [deleting, setDeleting] = useState(false);
   const socketRef = useRef(null);
-  const [loading, setLoading] = useState(false)
+  const [refresh, setRefresh] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetcher = async () => {
       if (status !== "authenticated") return;
-      setLoading(true)
       const res = await fetch(`/api/register?id=${userId}`)
       const data = await res.json()
       setUserData(data)
@@ -37,6 +37,7 @@ export default function ConversationPage() {
 
 
 
+  console.log(messages)
   useEffect(() => {
     if (!session?.user?.id || !userId) return;
     if (status !== "authenticated") return;
@@ -62,16 +63,6 @@ export default function ConversationPage() {
         setMessages((prev) => [...prev, message]);
       });
 
-
-      // 5. Listen for message read updates (optional)
-      socketRef.current.on("message-read", (messageId) => {
-        setMessages((prev) =>
-          prev.map((msg) =>
-            msg._id === messageId ? { ...msg, isRead: true } : msg
-          )
-        );
-      });
-
     }, 300);
 
 
@@ -81,6 +72,7 @@ export default function ConversationPage() {
       const res = await fetch(`/api/messages/conversation?user1=${session?.user?.id}&user2=${userId}`)
       const data = await res.json()
       setMessages(data)
+
 
     }
     fetcher()
@@ -92,7 +84,7 @@ export default function ConversationPage() {
       clearTimeout(timeout)
       socketRef.current?.disconnect();
     };
-  }, [session?.user?.id, userId]);
+  }, [session?.user?.id, userId, ]);
 
 
   useEffect(() => {

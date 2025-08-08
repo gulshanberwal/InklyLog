@@ -13,7 +13,7 @@ export default function CommentSlideUp({ slug, commentsLength }) {
     const [content, setContent] = useState("");
     const [comments, setComments] = useState([]);
     const [navHeight, setNavHeight] = useState(0);
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
     const [commentLoading, setCommentLoading] = useState(false)
 
 
@@ -37,11 +37,10 @@ export default function CommentSlideUp({ slug, commentsLength }) {
 
     useEffect(() => {
         if (showComments) {
-            setLoading(true)
             fetch(`/api/post/comments?slug=${slug}`)
                 .then(res => res.json())
-                .then(data => { setComments(data); setContent("") });
-            setLoading(false)
+                .then(data => { setComments(data); setContent(""); setLoading(false) }).catch(()=> setLoading(false))
+            
         }
     }, [slug, showComments]);
 

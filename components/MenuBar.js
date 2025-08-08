@@ -16,8 +16,8 @@ const MenuBar = ({ editor }) => {
 
 
   return (
-    <div className="control-group">
-      <div className="flex flex-wrap gap-2 p-3 border rounded-xl mb-6 bg-white dark:bg-zinc-900 dark:border-zinc-700 shadow-sm">
+    <div className="sticky top-0 z-50 control-group">
+      <div className=" flex flex-wrap gap-2 p-3 border rounded-xl mb-6 bg-white dark:bg-zinc-900 dark:border-zinc-700 shadow-sm">
         {[1, 2, 3].map((level) => {
           const HeadingIcon = [Heading1, Heading2, Heading3][level - 1]
           return (
