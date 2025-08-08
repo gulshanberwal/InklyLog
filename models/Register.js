@@ -5,7 +5,7 @@ const RegisterSchema = new mongoose.Schema({
   username: String,
   password: String,
   name: String,
-  bio: { type: String, default: "" },
+  bio: { type: String},
   profileImage: String,
   followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Register' }],
   following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Register' }],
