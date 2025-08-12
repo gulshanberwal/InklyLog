@@ -131,8 +131,8 @@ const authenticated = status == "authenticated"
     return (
         <main className="min-h-screen bg-gradient-to-br from-white to-blue-50 dark:from-gray-900 dark:to-gray-950 py-20 px-4 text-gray-800 dark:text-gray-100">
             <div className="max-w-3xl mx-auto bg-white dark:bg-gray-800 shadow-2xl rounded-2xl p-8">
-                <h1 className="text-3xl font-bold text-blue-700 dark:text-blue-400 mb-6">
-                    ⚙️ Profile Settings
+                <h1 className="flex items-center gap-2 text-3xl font-bold text-blue-700 dark:text-blue-400 mb-6">
+                    Profile Settings
                 </h1>
 
                 {/* Avatar Upload */}

@@ -58,8 +58,6 @@ export default function HomePage() {
 
 
 
-
-
   useEffect(() => {
     function getLimitByScreenSize() {
       if (typeof window === "undefined") return 6; // default fallback during SSR
@@ -84,6 +82,8 @@ export default function HomePage() {
     return () => clearTimeout(timeout);
   }, [limit]);
 
+  
+let firstLoadDone = posts.length > 0 || !loading;
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -113,7 +113,7 @@ export default function HomePage() {
     setUrlLoader(false)
   }, [pathname])
 
-  if (loading || posts == undefined || limit == null) return <SubtleSpinner />
+  if (loading || posts == undefined || limit == null && !firstLoadDone ) return <SubtleSpinner />
 
   if (urlLoader) return <SubtleSpinner />
 
@@ -209,7 +209,7 @@ export default function HomePage() {
         </Masonry>
       }
       {hasMore && (
-        <div ref={loaderRef} className="col-span-full flex justify-center text-black py-6 dark:text-white">
+        <div ref={loaderRef} className="flex justify-center items-center text-black py-2 dark:text-white">
           Loading...
         </div>
       )}
