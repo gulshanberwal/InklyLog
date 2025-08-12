@@ -24,6 +24,7 @@ export default function HomePage() {
   const [page, setPage] = useState(0); // skip = page * limit
   const isFetchingRef = useRef(false);
   const seenSlugsRef = useRef(new Set());
+  const [firstLoadDone, setFirstLoadDone] = useState(false)
 
   let fetchPosts = async () => {
 
@@ -53,6 +54,7 @@ export default function HomePage() {
     } finally {
       isFetchingRef.current = false;
       setLoading(false);
+      setFirstLoadDone(true)
     }
   }
 
@@ -83,7 +85,7 @@ export default function HomePage() {
   }, [limit]);
 
   
-let firstLoadDone = posts.length > 0 || !loading;
+
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -117,7 +119,7 @@ let firstLoadDone = posts.length > 0 || !loading;
 
   if (urlLoader) return <SubtleSpinner />
 
-  if (posts.length === 0) {
+  if (posts.length === 0 && firstLoadDone) {
     return (
       <div className="flex justify-center items-center h-screen text-gray-500 dark:text-gray-400 text-lg">
         No blog posts yet. Be the first to publish one!
