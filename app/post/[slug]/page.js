@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import dbConnect from "@/lib/mongoose";
 import Blogs from "@/models/Blogs";
+import Register from "@/models/Register";
 import PostContent from "@/components/PostContent";
 import { Eye } from "lucide-react"
 import PostContentView from "@/components/utils/PostContentView";
