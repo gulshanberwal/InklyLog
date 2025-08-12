@@ -57,6 +57,10 @@ export default function RegisterPage() {
     }
   };
 
+
+  const allowedPatternName = /^[a-zA-Z0-9_ ]*$/;
+  const allowedPatternUsername = /^[a-zA-Z0-9_]*$/;
+
   const handleRegister = async (e) => {
     e.preventDefault();
     setScreenLoading(true)
@@ -69,6 +73,20 @@ export default function RegisterPage() {
     formData.append("bio", form.bio.value);
     formData.append("profileImage", imageUrl); // 🔵 using uploaded URL
 
+    const name = form.name.value.trim();
+    const username = form.username.value.trim();
+
+    if (!allowedPatternName.test(name)) {
+      setError("Name can only contain letters, numbers, underscores, and spaces.");
+      setScreenLoading(false)
+      return;
+    }
+
+    if (!allowedPatternUsername.test(username)) {
+      setError("Username can only contain letters, numbers, and underscores (no spaces).");
+      setScreenLoading(false)
+      return;
+    }
 
 
     const res = await fetch("/api/register", {
@@ -89,7 +107,27 @@ export default function RegisterPage() {
   useEffect(() => {
     setScreenLoading(false)
   }, [pathname])
-  
+
+
+
+  const handleNameChange = (e) => {
+    const value = e.target.value;
+    if (allowedPatternName.test(value)) {
+      e.target.value = value; // keep it
+    } else {
+      e.target.value = value.replace(/[^a-zA-Z0-9_ ]/g, ""); // strip bad chars
+    }
+  };
+
+  const handleUsernameChange = (e) => {
+    const value = e.target.value;
+    if (allowedPatternUsername.test(value)) {
+      e.target.value = value;
+    } else {
+      e.target.value = value.replace(/[^a-zA-Z0-9_]/g, "");
+    }
+  };
+
 
   if (status === "authenticated") {
     return (
@@ -107,7 +145,7 @@ export default function RegisterPage() {
     );
   }
 
-  if (screenLoading) return <SubtleSpinner/>
+  if (screenLoading) return <SubtleSpinner />
 
 
   return (
@@ -123,6 +161,7 @@ export default function RegisterPage() {
           type="text"
           maxLength={18}
           placeholder="Full Name"
+          onChange={handleNameChange}
           required
           className="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
@@ -132,6 +171,7 @@ export default function RegisterPage() {
           maxLength={18}
           type="text"
           placeholder="Username(cannot change it again)"
+          onClick={handleUsernameChange}
           required
           className="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />

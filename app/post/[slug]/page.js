@@ -12,6 +12,7 @@ import CommentSlideUp from "@/components/CommentSlideUp";
 
 export async function generateMetadata({ params }) {
     const slug = params.slug;
+    await dbConnect()
     const post = await Blogs.findOne({ slug: slug });
     return {
         title: post ? post.title : "Post not found",
