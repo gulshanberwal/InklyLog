@@ -44,19 +44,18 @@ export default function HomePage() {
         setPosts(prev => [...prev, ...newPosts]);
         setHasMore(res.length === limit);
         setPage(prev => prev + 1);
-
+        setFirstLoadDone(true)
       } else {
         console.error("Invalid blog data:", res);
       }
 
     } catch (error) {
       console.error("Failed to load posts:", error);
+      setFirstLoadDone(true)
     } finally {
       isFetchingRef.current = false;
-      setTimeout(() => {
         setLoading(false);
-        setFirstLoadDone(true)
-      }, 500);
+        
     }
   }
 
@@ -121,7 +120,7 @@ export default function HomePage() {
 
   if (urlLoader) return <SubtleSpinner />
 
-  if (posts.length === 0 && firstLoadDone) {
+  if (!loading && firstLoadDone && posts.length == 0) {
     return (
       <div className="flex justify-center items-center h-screen text-gray-500 dark:text-gray-400 text-lg">
         No blog posts yet. Be the first to publish one!
