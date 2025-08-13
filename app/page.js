@@ -53,8 +53,10 @@ export default function HomePage() {
       console.error("Failed to load posts:", error);
     } finally {
       isFetchingRef.current = false;
-      setLoading(false);
-      setFirstLoadDone(true)
+      setTimeout(() => {
+        setLoading(false);
+        setFirstLoadDone(true)
+      }, 500);
     }
   }
 
@@ -64,7 +66,7 @@ export default function HomePage() {
     function getLimitByScreenSize() {
       if (typeof window === "undefined") return 6; // default fallback during SSR
 
-      const width = window.innerWidth; // ✅ FIXED from innerHeight to innerWidth
+      const width = window.innerWidth; // 
       console.log("Screen width:", width);
 
       if (width >= 1080) return 11; // Desktop

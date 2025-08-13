@@ -79,7 +79,6 @@ export default async function ProfilePage({ params }) {
               </div>
             </div>
           )}
-
           <div className="w-full">
             <MessageCircle name={user.name} sessionId={sessionId} authorId={authorId} id={user._id.toString()}/>
             
