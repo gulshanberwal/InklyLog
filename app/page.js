@@ -115,11 +115,11 @@ export default function HomePage() {
     setUrlLoader(false)
   }, [pathname])
 
-  if (loading || posts == undefined || limit == null && !firstLoadDone ) return <SubtleSpinner />
+  if (!firstLoadDone || loading || posts === undefined || limit == null) return <SubtleSpinner />
 
   if (urlLoader) return <SubtleSpinner />
 
-  if (posts.length === 0 && firstLoadDone) {
+  if (posts.length === 0) {
     return (
       <div className="flex justify-center items-center h-screen text-gray-500 dark:text-gray-400 text-lg">
         No blog posts yet. Be the first to publish one!
