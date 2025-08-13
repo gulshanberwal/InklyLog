@@ -21,7 +21,7 @@ export default function ConversationPage() {
   const [selectedMessages, setSelectedMessages] = useState(new Set());
   const [deleting, setDeleting] = useState(false);
   const socketRef = useRef(null);
-  const [refresh, setRefresh] = useState(false)
+  const [disabled, setDisabled] = useState(false)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -110,6 +110,7 @@ export default function ConversationPage() {
   const handleSend = async () => {
     if (status !== "authenticated") return;
     if (!newMessage.trim()) return;
+    setDisabled(true)
     const res = await fetch("/api/messages/send", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -125,6 +126,7 @@ export default function ConversationPage() {
 
     // Emit the message to the socket server
     socketRef.current?.emit("send-message", data);
+    setDisabled(false)
   };
 
   const scrollToBottom = () => {
@@ -294,8 +296,9 @@ export default function ConversationPage() {
           onChange={(e) => setNewMessage(e.target.value)}
         />
         <button
+          disabled={disabled}
           onClick={handleSend}
-          className="bg-blue-600 hover:bg-blue-700 transition-colors h-12 self-end text-white px-4 py-2 rounded-xl shadow"
+          className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-700 transition-colors h-12 self-end text-white px-4 py-2 rounded-xl shadow"
         >
           Send
         </button>
