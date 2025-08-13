@@ -283,7 +283,7 @@ export default function ConversationPage() {
       </div>
 
       {/* Input area */}
-      <div className="flex gap-2">
+      <div className="flex gap-2 sticky bottom-4">
         <textarea
           ref={textareaRef}
           type="text"
