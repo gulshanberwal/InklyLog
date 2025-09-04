@@ -79,7 +79,7 @@ export default function HomePage() {
     if (limit == null) return;
     const timeout = setTimeout(() => {
       fetchPosts();
-    }, 500); // 1s delay
+    }, 250); // 1s delay
 
     return () => clearTimeout(timeout);
   }, [limit]);
