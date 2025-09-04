@@ -21,10 +21,7 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: "Inkly-Log",
-  description: "Inkly-Log is a Bloging website",
-  icons: {
-    icon: "./icon.png",
-  },
+  description: "Inkly-Log is a Bloging website"
 };
 
 export default function RootLayout({ children }) {

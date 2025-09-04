@@ -91,10 +91,10 @@ export default function DashboardTabsSection({ posts, followers, following, refr
                     Posts
                 </button>
                 <button className={tabClasses("followers")} onClick={() => { handleNav("followers") }}>
-                    Followers
+                    Followers {followers.length}
                 </button>
                 <button className={tabClasses("following")} onClick={() => { handleNav("following") }}>
-                    Following
+                    Following {following.length}
                 </button>
             </div>
 

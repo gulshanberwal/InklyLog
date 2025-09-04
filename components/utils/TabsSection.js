@@ -12,6 +12,8 @@ export default function TabsSection({ posts, followers, following }) {
   const pathname = usePathname()
   const [activeTab, setActiveTab] = useState("posts");
   const [loading, setLoading] = useState(false)
+  const [followersLength, setFollowersLength] = useState(followers.length)
+  const [followingLength, setFollowingLength] = useState(following.length)
 
   const tabClasses = (tab) =>
     `px-4 py-2 text-sm font-semibold rounded-full transition ${activeTab === tab
@@ -42,10 +44,10 @@ export default function TabsSection({ posts, followers, following }) {
           Posts
         </button>
         <button className={tabClasses("followers")} onClick={() => handleNav("followers")}>
-          Followers
+          Followers {followers.length}
         </button>
         <button className={tabClasses("following")} onClick={() => handleNav("following")}>
-          Following
+          Following {following.length}
         </button>
       </div>
 
