@@ -44,18 +44,17 @@ export default function HomePage() {
         setPosts(prev => [...prev, ...newPosts]);
         setHasMore(res.length === limit);
         setPage(prev => prev + 1);
-        setFirstLoadDone(true)
       } else {
         console.error("Invalid blog data:", res);
       }
 
     } catch (error) {
       console.error("Failed to load posts:", error);
-      setFirstLoadDone(true)
+      
     } finally {
       isFetchingRef.current = false;
         setLoading(false);
-        
+        setFirstLoadDone(true)
     }
   }
 
@@ -109,14 +108,14 @@ export default function HomePage() {
     return () => {
       if (currentLoader) observer.unobserve(currentLoader);
     };
-  }, [limit, page, hasMore]); // 👈 these dependencies should be included
+  }, [hasMore]); // 👈 these dependencies should be included
 
 
   useEffect(() => {
     setUrlLoader(false)
   }, [pathname])
 
-  if (!firstLoadDone || loading || posts === undefined || limit == null) return <SubtleSpinner />
+  if (!firstLoadDone || loading) return <SubtleSpinner />
 
   if (urlLoader) return <SubtleSpinner />
 
