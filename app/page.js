@@ -44,17 +44,18 @@ export default function HomePage() {
         setPosts(prev => [...prev, ...newPosts]);
         setHasMore(res.length === limit);
         setPage(prev => prev + 1);
+        setFirstLoadDone(true)
       } else {
         console.error("Invalid blog data:", res);
       }
 
     } catch (error) {
       console.error("Failed to load posts:", error);
-      
+      setFirstLoadDone(true)
     } finally {
       isFetchingRef.current = false;
         setLoading(false);
-        setFirstLoadDone(true)
+        
     }
   }
 
@@ -79,7 +80,7 @@ export default function HomePage() {
     if (limit == null) return;
     const timeout = setTimeout(() => {
       fetchPosts();
-    }, 250); // 1s delay
+    }, 500); // 1s delay
 
     return () => clearTimeout(timeout);
   }, [limit]);
