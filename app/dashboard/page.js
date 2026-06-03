@@ -131,7 +131,7 @@ export default function DashboardPage() {
                             </button>
                         </div></h1>
                         <p className="text-sm text-gray-500 dark:text-gray-400">@{username}</p>
-                        <p className="mt-1 text-gray-600 break-all dark:text-gray-300 text-sm">{bio}</p>
+                        <p className="mt-1 text-gray-600 break-words whitespace-pre-wrap dark:text-gray-300 text-sm">{bio}</p>
                     </div>
                 </div>
 
