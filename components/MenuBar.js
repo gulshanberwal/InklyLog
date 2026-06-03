@@ -119,11 +119,15 @@ const MenuBar = ({ editor }) => {
               ].map(({ label, value, class: extra = '' }) => (
                 <button
                   key={label}
-                  onClick={() =>
+                  onClick={() => {
+                    const chain = editor.chain().focus();
+
                     value
-                      ? editor.chain().focus().setFontFamily(value).run()
-                      : editor.chain().focus().unsetFontFamily().run()
-                  }
+                      ? chain.setFontFamily(value).run()
+                      : chain.unsetFontFamily().run();
+
+                    setShowFonts(false);
+                  }}
                   className={`text-left px-3 py-1 w-full hover:bg-blue-50 dark:hover:bg-zinc-700 ${extra}`}
                 >
                   {label}
