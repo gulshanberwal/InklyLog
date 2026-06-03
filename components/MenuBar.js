@@ -16,7 +16,7 @@ const MenuBar = ({ editor }) => {
 
 
   return (
-    <div className="sticky top-20 z-50 control-group">
+    <div className={`control-group`}>
       <div className=" flex flex-wrap gap-2 p-3 border rounded-xl mb-6 bg-white dark:bg-zinc-900 dark:border-zinc-700 shadow-sm">
         {[1, 2, 3].map((level) => {
           const HeadingIcon = [Heading1, Heading2, Heading3][level - 1]
@@ -102,7 +102,7 @@ const MenuBar = ({ editor }) => {
             <Type size={18} /> <ChevronDown size={16} />
           </button>
           {showFonts && (
-            <div className="absolute w-48 top-10 left-0 z-20 bg-white dark:bg-zinc-900 border dark:border-zinc-700 p-1 shadow-md rounded-md flex flex-col overflow-hidden">
+            <div className="absolute w-48 md:top-10 max-md:bottom-full overflow-y-auto left-0 z-20 bg-white dark:bg-zinc-900 border dark:border-zinc-700 p-1 shadow-md rounded-md flex flex-col">
               {[
                 { label: 'Unset', value: '', class: 'text-red-500' },
                 { label: 'Inter', value: 'Inter' },
@@ -139,4 +139,3 @@ const MenuBar = ({ editor }) => {
 }
 
 export default MenuBar
-
