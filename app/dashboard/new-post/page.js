@@ -22,6 +22,7 @@ const Tiptap = () => {
   const [post, setPost] = useState()
   const [mounted, setMounted] = useState(false)
   const [disabled, setDisabled] = useState(false)
+  const [keyboardOpen, setKeyboardOpen] = useState(false);
 
 
 
@@ -98,6 +99,20 @@ const Tiptap = () => {
   }, [pathname])
 
 
+  useEffect(() => {
+    const initialHeight = window.innerHeight;
+
+    const handleResize = () => {
+      setKeyboardOpen(window.innerHeight < initialHeight - 150);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
 
   if (!mounted || !editor) return null;
 
@@ -148,7 +163,12 @@ const Tiptap = () => {
 
         {/* Editor */}
         <div className="mt-6 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md p-4">
-          <MenuBar editor={editor} />
+          <div className='min-md:block hidden'>
+            <MenuBar editor={editor} />
+          </div>
+          <div className={`max-md:fixed md:hidden max-md:m-[10px] ${keyboardOpen ? "max-md:bottom-[-40px]" : "max-md:bottom-[40px]" }  max-md:left-0 max-md:right-0 z-50`}>
+            <MenuBar editor={editor} />
+          </div>
           <EditorContent editor={editor} />
 
         </div>
