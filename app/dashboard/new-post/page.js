@@ -140,7 +140,7 @@ const Tiptap = () => {
 
   return (
     <div className="bg-white dark:bg-gray-900 min-h-screen text-gray-800 dark:text-gray-100">
-      <div className="max-w-4xl mx-auto p-6 pb-32 space-y-6">
+      <div className="max-w-4xl mx-auto p-6 pb-[50vh] space-y-6">
         <h1 className="text-3xl font-bold text-black dark:text-white">Create New Post</h1>
 
         {/* Title and Subject */}
