@@ -21,7 +21,7 @@ export default function HomePage() {
   const [hasMore, setHasMore] = useState(true);
   const [limit, setLimit] = useState(null)
   const loaderRef = useRef();
-  const [page, setPage] = useState(0); // skip = page * limit
+  const pageRef = useRef(0);
   const isFetchingRef = useRef(false);
   const seenSlugsRef = useRef(new Set());
   const [firstLoadDone, setFirstLoadDone] = useState(false)
@@ -32,7 +32,7 @@ export default function HomePage() {
 
     isFetchingRef.current = true;
 
-    const nextPage = page;
+    const nextPage = pageRef.current;
     try {
       let a = await fetch(`/api/blogs?skip=${nextPage * limit}&limit=${limit}`)
       let res = await a.json()
@@ -43,7 +43,7 @@ export default function HomePage() {
         // Add to state
         setPosts(prev => [...prev, ...newPosts]);
         setHasMore(res.length === limit);
-        setPage(prev => prev + 1);
+        pageRef.current++;
         setFirstLoadDone(true)
       } else {
         console.error("Invalid blog data:", res);
@@ -91,13 +91,13 @@ export default function HomePage() {
   useEffect(() => {
     const observer = new IntersectionObserver(
       entries => {
-        if (entries[0].isIntersecting) {
+        if (entries[0].isIntersecting && hasMore && !isFetchingRef.current) {
           fetchPosts();
         }
       },
       {
         rootMargin: "200px",
-        threshold: 1.0,
+        threshold: 0,
       }
     );
 
@@ -109,7 +109,7 @@ export default function HomePage() {
     return () => {
       if (currentLoader) observer.unobserve(currentLoader);
     };
-  }, [hasMore]); // 👈 these dependencies should be included
+  }, [hasMore, limit]);
 
 
   useEffect(() => {
