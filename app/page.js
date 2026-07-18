@@ -18,109 +18,36 @@ export default function HomePage() {
   const pathname = usePathname()
   const [urlLoader, setUrlLoader] = useState(false)
   const [loading, setLoading] = useState(true);
-  const [hasMore, setHasMore] = useState(true);
-  const [limit, setLimit] = useState(null)
-  const loaderRef = useRef();
-  const pageRef = useRef(0);
-  const isFetchingRef = useRef(false);
-  const seenSlugsRef = useRef(new Set());
-  const [firstLoadDone, setFirstLoadDone] = useState(false)
 
-  let fetchPosts = async () => {
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        setLoading(true);
 
-    if (isFetchingRef.current || !hasMore) return;
+        const res = await fetch("/api/blogs");
+        const data = await res.json();
 
-    isFetchingRef.current = true;
-
-    const nextPage = pageRef.current;
-    try {
-      let a = await fetch(`/api/blogs?skip=${nextPage * limit}&limit=${limit}`)
-      let res = await a.json()
-      if (Array.isArray(res)) {
-        const newPosts = res.filter(p => !seenSlugsRef.current.has(p.slug));
-        // Add new slugs to the set
-        newPosts.forEach(p => seenSlugsRef.current.add(p.slug));
-        // Add to state
-        setPosts(prev => [...prev, ...newPosts]);
-        setHasMore(res.length === limit);
-        pageRef.current++;
-        setFirstLoadDone(true)
-      } else {
-        console.error("Invalid blog data:", res);
-      }
-
-    } catch (error) {
-      console.error("Failed to load posts:", error);
-      setFirstLoadDone(true)
-    } finally {
-      isFetchingRef.current = false;
+        setPosts(data.posts || data);
+      } catch (err) {
+        console.error(err);
+      } finally {
         setLoading(false);
-        
-    }
-  }
-
-
-
-  useEffect(() => {
-    function getLimitByScreenSize() {
-      if (typeof window === "undefined") return 6; // default fallback during SSR
-
-      const width = window.innerWidth; // 
-      console.log("Screen width:", width);
-
-      if (width >= 1080) return 11; // Desktop
-      if (width >= 640 && width <= 1079) return 6;  // Tablet
-      return 4;                       // Mobile
-    }
-    setLimit(getLimitByScreenSize());
-  }, []);
-
-
-  useEffect(() => {
-    if (limit == null) return;
-    const timeout = setTimeout(() => {
-      fetchPosts();
-    }, 500); // 1s delay
-
-    return () => clearTimeout(timeout);
-  }, [limit]);
-
-  
-
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      entries => {
-        if (entries[0].isIntersecting && hasMore && !isFetchingRef.current) {
-          fetchPosts();
-        }
-      },
-      {
-        rootMargin: "200px",
-        threshold: 0,
       }
-    );
-
-    const currentLoader = loaderRef.current;
-    if (currentLoader) {
-      observer.observe(currentLoader);
-    }
-
-    return () => {
-      if (currentLoader) observer.unobserve(currentLoader);
     };
-  }, [hasMore, limit]);
+
+    fetchPosts();
+  }, []);
 
 
   useEffect(() => {
     setUrlLoader(false)
   }, [pathname])
 
-  if (!firstLoadDone || loading) return <SubtleSpinner />
+  if (loading) return <SubtleSpinner />
 
   if (urlLoader) return <SubtleSpinner />
 
-  if (!loading && firstLoadDone && posts.length == 0) {
+  if (!loading && posts.length == 0) {
     return (
       <div className="flex justify-center items-center h-screen text-gray-500 dark:text-gray-400 text-lg">
         No blog posts yet. Be the first to publish one!
@@ -148,7 +75,7 @@ export default function HomePage() {
           {posts.map((post) => (
             <div
               key={post.slug}
-              onClick={() => {setUrlLoader(true); router.push(`/post/${post.slug}`) }}
+              onClick={() => { setUrlLoader(true); router.push(`/post/${post.slug}`) }}
               className="break-inside-avoid cursor-pointer mx-2 bg-white dark:bg-gray-800 p-4 rounded-3xl shadow-md border border-gray-200 dark:border-gray-700 hover:shadow-2xl hover:border-blue-400 transition-all duration-300 group flex flex-col justify-between"
             >
               {/* Top Section (Profile + Content) */}
@@ -211,12 +138,8 @@ export default function HomePage() {
           ))}
         </Masonry>
       }
-      {hasMore && (
-        <div ref={loaderRef} className="flex justify-center items-center text-black py-2 dark:text-white">
-          Loading...
-        </div>
-      )}
 
     </>
   );
 }
+
