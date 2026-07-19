@@ -14,7 +14,6 @@ export async function POST(req) {
     sender,
     receiver,
     content,
-    isRead: false,
   });
 
   return NextResponse.json(message);
