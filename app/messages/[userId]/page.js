@@ -3,7 +3,6 @@ import Link from "next/link";
 import { useEffect, useState, useRef, use } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { IoCheckmarkCircleOutline, IoCheckmarkDoneCircle } from "react-icons/io5";
 import { Trash2, ArrowRight } from "lucide-react";
 import io from "socket.io-client";
 import ThemeToggle from "@/components/ThemeToggle";
@@ -92,21 +91,7 @@ export default function ConversationPage() {
     scrollToBottom();
   }, [messages.length + 1]);
 
-  useEffect(() => {
-    if (!session?.user?.id || !userId) return;
-    if (status !== "authenticated") return;
-    fetch("/api/messages/mark-read", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        senderId: userId,     // person who sent you messages
-        receiverId: session?.user?.id, // you are the receiver
-      }),
-    });
-  }, [session?.user?.id, userId]);
-
-
-
+                                 
   const handleSend = async () => {
     if (status !== "authenticated") return;
     if (!newMessage.trim()) return;
@@ -260,22 +245,13 @@ export default function ConversationPage() {
                   } ${selectedMessages.has(msg._id) ? "ring-2 ring-red-400" : ""}`}
               >
                 <p className="text-sm">{msg.content}</p>
-                <div className="text-xs opacity-70 mt-1 flex items-center justify-between">
+                <div className="text-xs opacity-70 mt-1 flex items-center justify-end">
                   <span>
                     {new Date(msg.createdAt).toLocaleTimeString([], {
                       hour: "2-digit",
                       minute: "2-digit",
                     })}
                   </span>
-                  {isSender && (
-                    <span className="ml-2">
-                      {msg.isRead ? (
-                        <IoCheckmarkDoneCircle size={18} />
-                      ) : (
-                        <IoCheckmarkCircleOutline size={18} />
-                      )}
-                    </span>
-                  )}
                 </div>
               </div>
             </div>
