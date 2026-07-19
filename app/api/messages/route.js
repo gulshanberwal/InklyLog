@@ -38,7 +38,6 @@ export async function GET(req) {
         _id: "$sender",
         lastMessage: { $first: "$content" },
         timestamp: { $first: "$createdAt" },
-        isRead: { $first: "$isRead" },
       },
     },
     {
@@ -58,7 +57,6 @@ export async function GET(req) {
         profileImage: "$senderInfo.profileImage",
         lastMessage: 1,
         timestamp: 1,
-        isRead: 1,
       },
     },
   ]);
