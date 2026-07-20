@@ -1,36 +1,105 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🖋️ InklyLog
 
-## Getting Started
+InklyLog is a modern, full-stack social media blogging platform built with Next.js. It allows users to write rich-text articles, follow other creators, engage via real-time messaging, and interact with posts through likes, views, and comments.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 🚀 Features
+
+- **Robust Authentication**: Secure credential-based registration and login powered by `NextAuth.js`.
+- **Rich Text Editor**: Interactive article creation and seamless viewing utilizing `Tiptap`.
+- **Social Interactivity**: Follow/Unfollow user workflows, look up creators with real-time user search, and track post interactions (views, likes, and comments).
+- **Real-Time Messaging**: Chat instantly with other creators using integrated `Socket.io` workflows.
+- **Media Management**: Secure, high-performance image uploads and asset delivery integrated via `ImageKit`.
+- **Responsive Styling**: Sleek user interface featuring a dynamic dark/light theme engine built using `Tailwind CSS`.
+
+---
+
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js (App Router)
+- **Database**: MongoDB with Mongoose ODM
+- **Authentication**: NextAuth.js
+- **Real-Time Engines**: WebSockets / Socket.io
+- **Image Hosting**: ImageKit API
+- **Styling**: Tailwind CSS
+
+---
+
+## 📂 Project Structure
+
+```text
+InklyLog-main/
+├── app/                  # Next.js App Router (Pages & API Routes)
+│   ├── api/              # Backend endpoints (auth, blogs, messages, interactions)
+│   ├── dashboard/        # User workspace (writing, editing, profile settings)
+│   ├── messages/         # Real-time chat interface windows
+│   └── post/             # Publicly viewable dynamically routed articles
+├── components/           # Reusable UI Blocks (Navbar, Editor, Search bars)
+│   └── utils/            # Modular UI elements (trackers, buttons, tabs)
+├── lib/                  # Core configurations (Mongoose init, Auth options, Sockets)
+├── models/               # MongoDB Mongoose Data Schemas (User, Blog, Comment, Message)
+└── public/               # Static web assets (Icons, default images)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## ⚙️ Getting Started
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Follow these steps to configure and boot up your local instance of InklyLog.
 
-## Learn More
+### 1. Prerequisites
+Ensure you have the following installed on your local environment:
+- **Node.js** (v18.x or higher recommended)
+- **MongoDB Instance** (Local Community Server or Atlas Cluster Cloud database)
 
-To learn more about Next.js, take a look at the following resources:
+### 2. Clone the Repository
+```bash
+git clone https://github.com
+cd InklyLog
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 3. Install Dependencies
+```bash
+npm install
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 4. Setup Environment Variables
+Create a file named `.env` in your root directory and supply the following configuration paths:
 
-## Deploy on Vercel
+```env
+# Database Configuration
+MONGODB_URI=your_mongodb_connection_string
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# NextAuth Config
+NEXTAUTH_SECRET=your_nextauth_cryptographic_secret
+NEXTAUTH_URL=http://localhost:3000
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# ImageKit Media Provider API
+IMAGEKIT_PUBLIC_KEY=your_imagekit_public_key
+IMAGEKIT_PRIVATE_KEY=your_imagekit_private_key
+IMAGEKIT_URL_ENDPOINT=your_imagekit_url_endpoint
+
+# Socket Server (If deploying backend chat system externally)
+NEXT_PUBLIC_SOCKET_SERVER_URL=http://localhost:3000
+```
+
+### 5. Running the Application
+
+To run the Next.js development server:
+```bash
+npm run dev
+```
+Open [http://localhost:3000](http://localhost:3000) inside your web browser to check the results.
+
+To compile a production optimized build profile:
+```bash
+npm run build
+npm run start
+```
+
+---
+
+## 📝 License
+
+This project is licensed under the MIT License. Feel free to modify and build upon it!
