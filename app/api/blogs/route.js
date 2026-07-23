@@ -1,4 +1,5 @@
 import Blogs from "@/models/Blogs";
+import Register from "@/models/Register";
 import dbConnect from "@/lib/mongoose";
 import { v4 as uuidv4 } from 'uuid';
 
