@@ -18,16 +18,28 @@ export default function HomePage() {
   const pathname = usePathname()
   const [urlLoader, setUrlLoader] = useState(false)
   const [loading, setLoading] = useState(true);
+  const [errorWhileFetching, setErrorWhileFetching] = useState(false)
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
         setLoading(true);
 
-        const res = await fetch("/api/blogs");
+        let res = await fetch("/api/blogs");
+
+        if (!res.ok) {
+          res = await fetch("/api/blogs");
+        }
+
         const data = await res.json();
 
-        setPosts(data.posts || data);
+        if(!res.ok) {
+          setErrorWhileFetching(true)
+          console.error(data)
+          return;
+        }
+
+        setPosts(Array.isArray(data.posts) ? data.posts : Array.isArray(data) ? data : []);
       } catch (err) {
         console.error(err);
       } finally {
@@ -50,7 +62,7 @@ export default function HomePage() {
   if (!loading && posts.length == 0) {
     return (
       <div className="flex justify-center items-center h-screen text-gray-500 dark:text-gray-400 text-lg">
-        No blog posts yet. Be the first to publish one!
+        {errorWhileFetching ? "There is an error while fetching, please reload the page!" : "No blog posts yet, Be the first to publish one!"}
       </div>
     );
   }
