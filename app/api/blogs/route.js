@@ -77,16 +77,20 @@ export async function GET(request) {
   else {
     try {
       console.log("Fetching blogs...");
+      
 
-      const skip = parseInt(searchParams.get("skip") || "0");
-      const limit = parseInt(searchParams.get("limit") || "6");
-
-      const blogs = await Blogs.find().sort({ createdAt: -1 }).skip(skip).limit(limit).populate('authorId');
+      const blogs = await Blogs.find().sort({ createdAt: -1 }).populate('authorId');
 
 
       return new Response(JSON.stringify(blogs), { status: 200 });
     } catch (err) {
-      return new Response(JSON.stringify({ error: "Failed to fetch blogs" }), { status: 500 });
+      return Response.json(
+        {
+          error: err.message || "Internal server error!",
+          stack: err.stack,
+        },
+        { status: 500 }
+      );
     }
   }
 }
